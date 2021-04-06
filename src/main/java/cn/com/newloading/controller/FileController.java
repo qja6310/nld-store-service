@@ -43,7 +43,7 @@ public class FileController {
         File file2 = new File(rootPath);
         rootPath = file2.getCanonicalPath();
         rootPath = rootPath + "\\";
-        System.out.println(rootPath);
+        logger.info("==============磁盘路径" + rootPath);
         // 将文件放于项目部署路径下的upload文件夹下
         File targetFile = new File(rootPath);
         if (!targetFile.exists()) {
@@ -56,8 +56,8 @@ public class FileController {
         ServletFileUpload upload = new ServletFileUpload(factory);
 
         String path = request.getSession().getServletContext().getRealPath(serverPath);
-        System.out.println(path);
-
+        path += "\\";
+        logger.info("==============服务器路径" + path);
         String uuid = String.valueOf(UUID.randomUUID());// uuid
         String fileNames = file.getOriginalFilename();// 文件名
         fileNames = new String(fileNames.getBytes("UTF-8"));
@@ -78,8 +78,6 @@ public class FileController {
         Map<String, Object> map = new HashMap<String, Object>();
         result.setCode("F00");
         result.setMsg("上传成功");// 提示消息
-//        int index = fileName.indexOf("\\assets");
-//        fileName = ".." + fileName.substring(index, fileName.length());
         map.put("src", serverPath + uuid + extendName);// 图片url
         map.put("title", fileNames);// 名称，这个会显示在输入框里
         map.put("uuid",uuid);//标识

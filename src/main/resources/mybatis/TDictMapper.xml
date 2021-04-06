@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.newloading.dao.TDictDao">
+  <resultMap id="BaseResultMap" type="cn.com.newloading.bean.TDict">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="d_code" jdbcType="VARCHAR" property="dCode" />
+    <result column="d_key" jdbcType="VARCHAR" property="dKey" />
+    <result column="d_value" jdbcType="VARCHAR" property="dValue" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, d_code, d_key, d_value
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_dict
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_dict
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TDict" useGeneratedKeys="true">
+    insert into t_dict (d_code, d_key, d_value
+      )
+    values (#{dCode,jdbcType=VARCHAR}, #{dKey,jdbcType=VARCHAR}, #{dValue,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TDict" useGeneratedKeys="true">
+    insert into t_dict
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dCode != null">
+        d_code,
+      </if>
+      <if test="dKey != null">
+        d_key,
+      </if>
+      <if test="dValue != null">
+        d_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dCode != null">
+        #{dCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dKey != null">
+        #{dKey,jdbcType=VARCHAR},
+      </if>
+      <if test="dValue != null">
+        #{dValue,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.newloading.bean.TDict">
+    update t_dict
+    <set>
+      <if test="dCode != null">
+        d_code = #{dCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dKey != null">
+        d_key = #{dKey,jdbcType=VARCHAR},
+      </if>
+      <if test="dValue != null">
+        d_value = #{dValue,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.newloading.bean.TDict">
+    update t_dict
+    set d_code = #{dCode,jdbcType=VARCHAR},
+      d_key = #{dKey,jdbcType=VARCHAR},
+      d_value = #{dValue,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="queryByKey" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_dict
+    where d_code = #{code,jdbcType=VARCHAR}
+    and d_key = #{key,jdbcType=VARCHAR}
+  </select>
+</mapper>

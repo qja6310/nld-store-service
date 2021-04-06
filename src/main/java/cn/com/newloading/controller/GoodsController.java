@@ -230,7 +230,7 @@ public class GoodsController extends BaseController{
 		//图片对象
 		goods.setImgPath(jsonObject.getString("imgPath"));
 		goods.setImgTitle(jsonObject.getString("imgTitle"));
-		goods.setgType(Long.valueOf(jsonObject.getString("gType")));
+		goods.setgType(jsonObject.getString("gType") == null ? null : Long.valueOf(jsonObject.getString("gType")));
 		return goods;
 	}
 

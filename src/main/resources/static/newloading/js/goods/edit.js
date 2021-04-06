@@ -99,7 +99,8 @@ function showImg(obj){
     var div = $("<div style='margin: 0 5px;' class='layui-input-inline imgDiv' value='"+obj.uuid+"'></div>");
     var path = $("<input type='hidden' class='imgPath' value='/"+obj.src+"'/>");
     var title = $("<input type='hidden' class='imgTitle' value='"+obj.title+"'/>");
-    var img = $("<img class='img-size' src='../"+obj.src+"' title='"+obj.title+"'>");
+    var img = $("<img class='img-size' title='"+obj.title+"'>");
+    img.attr("src","../" + obj.src);
     var close = $("<i class=\"layui-icon layui-icon-close-fill img-close\"></i>");
     close.attr("value",obj.uuid);
     close.on('click',function () {

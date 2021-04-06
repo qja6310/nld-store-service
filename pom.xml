@@ -12,7 +12,7 @@
 	<groupId>cn.com.newloading</groupId>
 	<artifactId>newloading</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>shopping</name>
+	<name>nld-store-service</name>
 	<packaging>jar</packaging>
 	<description>Demo project for Spring Boot</description>
 
