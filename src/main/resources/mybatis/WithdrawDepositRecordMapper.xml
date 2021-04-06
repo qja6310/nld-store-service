@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.newloading.dao.WithdrawDepositRecordDao">
+  <resultMap id="BaseResultMap" type="cn.com.newloading.bean.WithdrawDepositRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="m_id" jdbcType="BIGINT" property="mId" />
+    <result column="money" jdbcType="DECIMAL" property="money" />
+    <result column="card_no" jdbcType="VARCHAR" property="cardNo" />
+    <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, m_id, money, card_no, operate_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from withdraw_deposit_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from withdraw_deposit_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.WithdrawDepositRecord" useGeneratedKeys="true">
+    insert into withdraw_deposit_record (m_id, money, card_no, 
+      operate_time)
+    values (#{mId,jdbcType=BIGINT}, #{money,jdbcType=DECIMAL}, #{cardNo,jdbcType=VARCHAR}, 
+      #{operateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.WithdrawDepositRecord" useGeneratedKeys="true">
+    insert into withdraw_deposit_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        m_id,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="cardNo != null">
+        card_no,
+      </if>
+      <if test="operateTime != null">
+        operate_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        #{mId,jdbcType=BIGINT},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="cardNo != null">
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null">
+        #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.newloading.bean.WithdrawDepositRecord">
+    update withdraw_deposit_record
+    <set>
+      <if test="mId != null">
+        m_id = #{mId,jdbcType=BIGINT},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="cardNo != null">
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null">
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.newloading.bean.WithdrawDepositRecord">
+    update withdraw_deposit_record
+    set m_id = #{mId,jdbcType=BIGINT},
+      money = #{money,jdbcType=DECIMAL},
+      card_no = #{cardNo,jdbcType=VARCHAR},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="queryByMid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from withdraw_deposit_record
+    where m_id = #{mid,jdbcType=BIGINT}
+    order by operate_time desc
+  </select>
+</mapper>

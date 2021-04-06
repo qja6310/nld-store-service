@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.newloading.dao.TAddressDao">
+  <resultMap id="BaseResultMap" type="cn.com.newloading.bean.TAddress">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="u_id" jdbcType="BIGINT" property="uId" />
+    <result column="detail_addr" jdbcType="VARCHAR" property="detailAddr" />
+    <result column="con_name" jdbcType="VARCHAR" property="conName" />
+    <result column="con_phone" jdbcType="VARCHAR" property="conPhone" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, u_id, detail_addr, con_name, con_phone
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_address
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_address
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TAddress" useGeneratedKeys="true">
+    insert into t_address (u_id, detail_addr, con_name, 
+      con_phone)
+    values (#{uId,jdbcType=BIGINT}, #{detailAddr,jdbcType=VARCHAR}, #{conName,jdbcType=VARCHAR}, 
+      #{conPhone,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TAddress" useGeneratedKeys="true">
+    insert into t_address
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        u_id,
+      </if>
+      <if test="detailAddr != null">
+        detail_addr,
+      </if>
+      <if test="conName != null">
+        con_name,
+      </if>
+      <if test="conPhone != null">
+        con_phone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        #{uId,jdbcType=BIGINT},
+      </if>
+      <if test="detailAddr != null">
+        #{detailAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="conName != null">
+        #{conName,jdbcType=VARCHAR},
+      </if>
+      <if test="conPhone != null">
+        #{conPhone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.newloading.bean.TAddress">
+    update t_address
+    <set>
+      <if test="uId != null">
+        u_id = #{uId,jdbcType=BIGINT},
+      </if>
+      <if test="detailAddr != null">
+        detail_addr = #{detailAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="conName != null">
+        con_name = #{conName,jdbcType=VARCHAR},
+      </if>
+      <if test="conPhone != null">
+        con_phone = #{conPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.newloading.bean.TAddress">
+    update t_address
+    set u_id = #{uId,jdbcType=BIGINT},
+      detail_addr = #{detailAddr,jdbcType=VARCHAR},
+      con_name = #{conName,jdbcType=VARCHAR},
+      con_phone = #{conPhone,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <delete id="deleteByUserId" parameterType="java.lang.Long">
+    delete from t_address
+    where u_id = #{uid,jdbcType=BIGINT}
+  </delete>
+  <select id="queryAddrByUid" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_address
+    where u_id = #{uid,jdbcType=BIGINT}
+  </select>
+</mapper>

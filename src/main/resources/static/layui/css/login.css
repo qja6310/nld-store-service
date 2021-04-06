@@ -1,0 +1,76 @@
+#wrap_box{
+	position:absolute;
+	top:0;
+	left:0;
+	height:100%;
+	width: 100%;
+}
+.login_h{
+	height: 100%;
+	position: relative;
+}	
+.bg{
+	height: 50%;
+	background: rgb(238,238,238);
+	width: 100%;
+}
+.Popup{
+	display: none;
+}
+.bg_img{
+	height: 50%;
+	background:url('../image/Group 10_zh.jpg');
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	position: relative;
+}
+.bg_img h1{
+	font-size: 61px;
+    color: rgb(48,194,247);
+    text-align: center;
+    margin: 0 auto;
+    position: absolute;
+    display: inline-block;
+    top: 25%;
+    left: 34.6%;
+}
+.login_con{
+
+	margin: 0 auto;
+	margin-top:-160px;
+	width: 340px;
+}
+.login_mod{
+	width: 300px;
+	height: 210px;
+	background-color: rgb(255,255,255);
+	padding: 20px;
+	border-radius: 10px;
+	display: flex;
+    align-items: center;
+}
+.bg>div{
+	position: relative;
+}
+.login_mod>div{
+	width: 100%;
+}
+.h_g{
+	height: 160px;
+	background: rgb(238,238,238);
+}
+.logins{
+	border-radius: 6px;
+}
+.login_w{
+	text-align: center;
+	font-size: 26px;
+	color: rgb(255,255,255);
+	margin-bottom:10px;
+}
+.user{
+	margin-bottom: 20px;
+}
+.password{
+	margin-bottom: 20px;
+}

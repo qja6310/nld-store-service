@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.newloading.dao.TAdminDao">
+  <resultMap id="BaseResultMap" type="cn.com.newloading.bean.TAdmin">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="a_name" jdbcType="VARCHAR" property="aName" />
+    <result column="a_acc" jdbcType="VARCHAR" property="aAcc" />
+    <result column="a_pwd" jdbcType="VARCHAR" property="aPwd" />
+    <result column="a_phone" jdbcType="VARCHAR" property="aPhone" />
+    <result column="a_email" jdbcType="VARCHAR" property="aEmail" />
+    <result column="is_super" jdbcType="VARCHAR" property="isSuper" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, a_name, a_acc, a_pwd, a_phone, a_email, is_super
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_admin
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_admin
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TAdmin" useGeneratedKeys="true">
+    insert into t_admin (a_name, a_acc, a_pwd, 
+      a_phone, a_email, is_super
+      )
+    values (#{aName,jdbcType=VARCHAR}, #{aAcc,jdbcType=VARCHAR}, #{aPwd,jdbcType=VARCHAR}, 
+      #{aPhone,jdbcType=VARCHAR}, #{aEmail,jdbcType=VARCHAR}, #{isSuper,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TAdmin" useGeneratedKeys="true">
+    insert into t_admin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="aName != null">
+        a_name,
+      </if>
+      <if test="aAcc != null">
+        a_acc,
+      </if>
+      <if test="aPwd != null">
+        a_pwd,
+      </if>
+      <if test="aPhone != null">
+        a_phone,
+      </if>
+      <if test="aEmail != null">
+        a_email,
+      </if>
+      <if test="isSuper != null">
+        is_super,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="aName != null">
+        #{aName,jdbcType=VARCHAR},
+      </if>
+      <if test="aAcc != null">
+        #{aAcc,jdbcType=VARCHAR},
+      </if>
+      <if test="aPwd != null">
+        #{aPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="aPhone != null">
+        #{aPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="aEmail != null">
+        #{aEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="isSuper != null">
+        #{isSuper,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.newloading.bean.TAdmin">
+    update t_admin
+    <set>
+      <if test="aName != null">
+        a_name = #{aName,jdbcType=VARCHAR},
+      </if>
+      <if test="aAcc != null">
+        a_acc = #{aAcc,jdbcType=VARCHAR},
+      </if>
+      <if test="aPwd != null">
+        a_pwd = #{aPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="aPhone != null">
+        a_phone = #{aPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="aEmail != null">
+        a_email = #{aEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="isSuper != null">
+        is_super = #{isSuper,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.newloading.bean.TAdmin">
+    update t_admin
+    set a_name = #{aName,jdbcType=VARCHAR},
+      a_acc = #{aAcc,jdbcType=VARCHAR},
+      a_pwd = #{aPwd,jdbcType=VARCHAR},
+      a_phone = #{aPhone,jdbcType=VARCHAR},
+      a_email = #{aEmail,jdbcType=VARCHAR},
+      is_super = #{isSuper,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="doLogin" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_admin
+    where a_acc = #{aAcc,jdbcType=VARCHAR}
+    and a_pwd = #{aPwd,jdbcType=VARCHAR}
+  </select>
+  <select id="checkAccIsExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM t_admin WHERE a_acc = #{aAcc,jdbcType=VARCHAR}
+  </select>
+  <select id="checkAccIsExist2" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM t_admin WHERE a_acc = #{aAcc,jdbcType=VARCHAR} and id != #{id,jdbcType=BIGINT}
+  </select>
+  <select id="doQuery" parameterType="cn.com.newloading.bean.TAdmin" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_admin
+    <where>
+        1 = 1
+      <if test="aName != null">
+        and a_name like concat('%',#{aName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="aAcc != null">
+        and a_acc like concat('%',#{aAcc,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="aPhone != null">
+        and a_phone like concat('%',#{aPhone,jdbcType=VARCHAR},'%')
+      </if>
+    </where>
+    limit #{begin,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+  </select>
+</mapper>

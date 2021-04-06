@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.newloading.dao.TMerchantDao">
+  <resultMap id="BaseResultMap" type="cn.com.newloading.bean.TMerchant">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="m_name" jdbcType="VARCHAR" property="mName" />
+    <result column="m_code" jdbcType="VARCHAR" property="mCode" />
+    <result column="m_acc" jdbcType="VARCHAR" property="mAcc" />
+    <result column="m_pwd" jdbcType="VARCHAR" property="mPwd" />
+    <result column="m_addr" jdbcType="VARCHAR" property="mAddr" />
+    <result column="m_email" jdbcType="VARCHAR" property="mEmail" />
+    <result column="m_phone" jdbcType="VARCHAR" property="mPhone" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="m_boss_identity" jdbcType="VARCHAR" property="mBossIdentity" />
+    <result column="m_boss_name" jdbcType="VARCHAR" property="mBossName" />
+    <result column="m_boss_phone" jdbcType="VARCHAR" property="mBossPhone" />
+    <result column="m_boss_email" jdbcType="VARCHAR" property="mBossEmail" />
+    <result column="m_wallet" jdbcType="DECIMAL" property="mWallet" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, m_name, m_code, m_acc, m_pwd, m_addr, m_email, m_phone, `status`, m_boss_identity,
+    m_boss_name, m_boss_phone, m_boss_email,m_wallet
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_merchant
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="doLogin" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_merchant
+    where m_acc = #{mAcc,jdbcType=VARCHAR}
+    and m_pwd = #{mPwd,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_merchant
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TMerchant" useGeneratedKeys="true">
+    insert into t_merchant (m_name, m_code, m_acc, 
+      m_pwd, m_addr, m_email, 
+      m_phone, `status`, m_boss_identity,
+      m_boss_name, m_boss_phone, m_boss_email,m_wallet
+      )
+    values (#{mName,jdbcType=VARCHAR}, #{mCode,jdbcType=VARCHAR}, #{mAcc,jdbcType=VARCHAR}, 
+      #{mPwd,jdbcType=VARCHAR}, #{mAddr,jdbcType=VARCHAR}, #{mEmail,jdbcType=VARCHAR}, 
+      #{mPhone,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{mBossIdentity,jdbcType=VARCHAR},
+      #{mBossName,jdbcType=VARCHAR}, #{mBossPhone,jdbcType=VARCHAR}, #{mBossEmail,jdbcType=VARCHAR},
+      #{mWallet,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TMerchant" useGeneratedKeys="true">
+    insert into t_merchant
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mName != null">
+        m_name,
+      </if>
+      <if test="mCode != null">
+        m_code,
+      </if>
+      <if test="mAcc != null">
+        m_acc,
+      </if>
+      <if test="mPwd != null">
+        m_pwd,
+      </if>
+      <if test="mAddr != null">
+        m_addr,
+      </if>
+      <if test="mEmail != null">
+        m_email,
+      </if>
+      <if test="mPhone != null">
+        m_phone,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="mBossIdentity != null">
+        m_boss_identity,
+      </if>
+      <if test="mBossName != null">
+        m_boss_name,
+      </if>
+      <if test="mBossPhone != null">
+        m_boss_phone,
+      </if>
+      <if test="mBossEmail != null">
+        m_boss_email,
+      </if>
+      <if test="mWallet != null">
+        m_wallet,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mName != null">
+        #{mName,jdbcType=VARCHAR},
+      </if>
+      <if test="mCode != null">
+        #{mCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mAcc != null">
+        #{mAcc,jdbcType=VARCHAR},
+      </if>
+      <if test="mPwd != null">
+        #{mPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="mAddr != null">
+        #{mAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="mEmail != null">
+        #{mEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="mPhone != null">
+        #{mPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="mBossIdentity != null">
+        #{mBossIdentity,jdbcType=VARCHAR},
+      </if>
+      <if test="mBossName != null">
+        #{mBossName,jdbcType=VARCHAR},
+      </if>
+      <if test="mBossPhone != null">
+        #{mBossPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="mBossEmail != null">
+        #{mBossEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="mWallet != null">
+        #{mWallet,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.newloading.bean.TMerchant">
+    update t_merchant
+    <set>
+      <if test="mName != null">
+        m_name = #{mName,jdbcType=VARCHAR},
+      </if>
+      <if test="mCode != null">
+        m_code = #{mCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mAcc != null">
+        m_acc = #{mAcc,jdbcType=VARCHAR},
+      </if>
+      <if test="mPwd != null">
+        m_pwd = #{mPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="mAddr != null">
+        m_addr = #{mAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="mEmail != null">
+        m_email = #{mEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="mPhone != null">
+        m_phone = #{mPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="mBossIdentity != null">
+        m_boss_identity = #{mBossIdentity,jdbcType=VARCHAR},
+      </if>
+      <if test="mBossName != null">
+        m_boss_name = #{mBossName,jdbcType=VARCHAR},
+      </if>
+      <if test="mBossPhone != null">
+        m_boss_phone = #{mBossPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="mBossEmail != null">
+        m_boss_email = #{mBossEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="mWallet != null">
+        m_Wallet = #{mWallet,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.newloading.bean.TMerchant">
+    update t_merchant
+    set m_name = #{mName,jdbcType=VARCHAR},
+      m_code = #{mCode,jdbcType=VARCHAR},
+      m_acc = #{mAcc,jdbcType=VARCHAR},
+      m_pwd = #{mPwd,jdbcType=VARCHAR},
+      m_addr = #{mAddr,jdbcType=VARCHAR},
+      m_email = #{mEmail,jdbcType=VARCHAR},
+      m_phone = #{mPhone,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      m_boss_identity = #{mBossIdentity,jdbcType=VARCHAR},
+      m_boss_name = #{mBossName,jdbcType=VARCHAR},
+      m_boss_phone = #{mBossPhone,jdbcType=VARCHAR},
+      m_boss_email = #{mBossEmail,jdbcType=VARCHAR},
+      m_Wallet = #{mWallet,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="checkMerchantCode" resultType="java.lang.Integer">
+    select count(*) from t_merchant where m_code = #{mCode,jdbcType=VARCHAR}
+  </select>
+  <select id="checkMerchantAcc" resultType="java.lang.Integer">
+    select count(*) from t_merchant where m_acc = #{mAcc,jdbcType=VARCHAR}
+  </select>
+  <select id="checkMerchantAcc2" resultType="java.lang.Integer">
+    select count(*) from t_merchant where m_acc = #{mAcc,jdbcType=VARCHAR} and id != #{id,jdbcType=BIGINT}
+  </select>
+  <select id="doQuery" parameterType="cn.com.newloading.bean.TMerchant" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_merchant
+    <where>
+        1 = 1
+      <if test="mName != null">
+        and m_name like concat('%',#{mName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="mCode != null">
+        and m_code like concat('%',#{mCode,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="mAcc != null">
+        and m_acc like concat('%',#{mAcc,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="mPwd != null">
+        and m_pwd = #{mPwd,jdbcType=VARCHAR}
+      </if>
+      <if test="mAddr != null">
+        and m_addr like concat('%',#{mAddr,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="mEmail != null">
+        and m_email like concat('%',#{mEmail,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="mPhone != null">
+        and m_phone like concat('%',#{mPhone,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="status != null">
+        and `status` = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="mBossIdentity != null">
+        and m_boss_identity like concat('%',#{mBossIdentity,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="mBossName != null">
+        and m_boss_name like concat('%',#{mBossName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="mBossPhone != null">
+        and m_boss_phone like concat('%',#{mBossPhone,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="mBossEmail != null">
+        and m_boss_email like concat('%',#{mBossEmail,jdbcType=VARCHAR},'%')
+      </if>
+    </where>
+    limit #{begin,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+  </select>
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.newloading.dao.TMenuDao">
+  <resultMap id="BaseResultMap" type="cn.com.newloading.bean.TMenu">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="menuName" jdbcType="VARCHAR" property="menuname" />
+    <result column="createTime" jdbcType="VARCHAR" property="createtime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="serialNumber" jdbcType="INTEGER" property="serialnumber" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    m.id, m.menuName, m.createTime, m.`status`, m.serialNumber, m.pid, m.`path`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_menu m
+    where m.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TMenu" useGeneratedKeys="true">
+    insert into t_menu (menuName, createTime, `status`, 
+      serialNumber, pid, `path`
+      )
+    values (#{menuname,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{serialnumber,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TMenu" useGeneratedKeys="true">
+    insert into t_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="menuname != null">
+        menuName,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="serialnumber != null">
+        serialNumber,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="path != null">
+        `path`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="menuname != null">
+        #{menuname,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="serialnumber != null">
+        #{serialnumber,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.newloading.bean.TMenu">
+    update t_menu
+    <set>
+      <if test="menuname != null">
+        menuName = #{menuname,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="serialnumber != null">
+        serialNumber = #{serialnumber,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="path != null">
+        `path` = #{path,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.newloading.bean.TMenu">
+    update t_menu
+    set menuName = #{menuname,jdbcType=VARCHAR},
+      createTime = #{createtime,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      serialNumber = #{serialnumber,jdbcType=INTEGER},
+      pid = #{pid,jdbcType=INTEGER},
+      `path` = #{path,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="queryMenu" resultMap="BaseResultMap">
+    SELECT DISTINCT
+    <include refid="Base_Column_List" />
+    FROM
+      t_menu m
+        INNER JOIN t_role_menu rm ON m.id = rm.m_id
+        INNER JOIN t_admin_role ar ON rm.r_id = ar.r_id
+    WHERE
+      m.pid = #{pid,jdbcType=INTEGER}
+      AND ar.a_id = #{aId,jdbcType=BIGINT}
+  </select>
+  <select id="queryAllMenuByPid" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    t_menu m
+    WHERE
+    m.pid = #{pid,jdbcType=INTEGER}
+  </select>
+  <select id="queryMenuByRoleId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    t_menu m inner join t_role_menu rm on m.id = rm.m_id
+    WHERE
+    rm.r_id = #{rid,jdbcType=BIGINT}
+  </select>
+</mapper>

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.newloading.dao.TGoodsDao">
+  <resultMap id="BaseResultMap" type="cn.com.newloading.bean.TGoods">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="m_id" jdbcType="BIGINT" property="mId" />
+    <result column="g_title" jdbcType="VARCHAR" property="gTitle" />
+    <result column="g_detail" jdbcType="VARCHAR" property="gDetail" />
+    <result column="g_price" jdbcType="DECIMAL" property="gPrice" />
+    <result column="g_inventory" jdbcType="INTEGER" property="gInventory" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="g_author" jdbcType="VARCHAR" property="gAuthor" />
+    <result column="g_press" jdbcType="VARCHAR" property="gPress" />
+    <result column="g_type" jdbcType="BIGINT" property="gType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, m_id, g_title, g_detail, g_price, g_inventory, `status`, g_author, g_press,g_type
+  </sql>
+  <sql id="Base_Column_List1">
+    g.id, g.m_id, g.g_title, g.g_detail, g.g_price, g.g_inventory, g.`status`, g.g_author, g.g_press,g.g_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_goods
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_goods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TGoods" useGeneratedKeys="true">
+    insert into t_goods (m_id, g_title, g_detail, 
+      g_price, g_inventory, `status`, 
+      g_author, g_press)
+    values (#{mId,jdbcType=BIGINT}, #{gTitle,jdbcType=VARCHAR}, #{gDetail,jdbcType=VARCHAR}, 
+      #{gPrice,jdbcType=DECIMAL}, #{gInventory,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+      #{gAuthor,jdbcType=VARCHAR}, #{gPress,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TGoods" useGeneratedKeys="true">
+    insert into t_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        m_id,
+      </if>
+      <if test="gTitle != null">
+        g_title,
+      </if>
+      <if test="gDetail != null">
+        g_detail,
+      </if>
+      <if test="gPrice != null">
+        g_price,
+      </if>
+      <if test="gInventory != null">
+        g_inventory,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="gAuthor != null">
+        g_author,
+      </if>
+      <if test="gPress != null">
+        g_press,
+      </if>
+      <if test="gType != null">
+        g_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        #{mId,jdbcType=BIGINT},
+      </if>
+      <if test="gTitle != null">
+        #{gTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="gDetail != null">
+        #{gDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="gPrice != null">
+        #{gPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="gInventory != null">
+        #{gInventory,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="gAuthor != null">
+        #{gAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="gPress != null">
+        #{gPress,jdbcType=VARCHAR},
+      </if>
+      <if test="gType != null">
+        #{gType,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.newloading.bean.TGoods">
+    update t_goods
+    <set>
+      <if test="mId != null">
+        m_id = #{mId,jdbcType=BIGINT},
+      </if>
+      <if test="gTitle != null">
+        g_title = #{gTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="gDetail != null">
+        g_detail = #{gDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="gPrice != null">
+        g_price = #{gPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="gInventory != null">
+        g_inventory = #{gInventory,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="gAuthor != null">
+        g_author = #{gAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="gPress != null">
+        g_press = #{gPress,jdbcType=VARCHAR},
+      </if>
+      <if test="gType != null">
+        g_type = #{gType,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.newloading.bean.TGoods">
+    update t_goods
+    set m_id = #{mId,jdbcType=BIGINT},
+      g_title = #{gTitle,jdbcType=VARCHAR},
+      g_detail = #{gDetail,jdbcType=VARCHAR},
+      g_price = #{gPrice,jdbcType=DECIMAL},
+      g_inventory = #{gInventory,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=VARCHAR},
+      g_author = #{gAuthor,jdbcType=VARCHAR},
+      g_press = #{gPress,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="doQueryForMerchant" parameterType="cn.com.newloading.bean.TGoods" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_goods
+    <where>
+        1 = 1
+      <if test="mId != null">
+        and m_id = #{mId,jdbcType=BIGINT}
+      </if>
+      <if test="gType != null">
+        and g_type = #{gType,jdbcType=BIGINT}
+      </if>
+      <if test="status != null">
+        and `status` = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="gTitle != null">
+        and ( g_title like concat('%',#{gTitle,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="gDetail != null">
+        or g_detail like concat('%', #{gDetail,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="gAuthor != null">
+        or g_author like concat('%',#{gAuthor,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="gPress != null">
+        or g_press like concat('%',#{gPress,jdbcType=VARCHAR},'%') )
+      </if>
+    </where>
+    limit #{begin,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+  </select>
+  <select id="doQueryForAdmin" parameterType="cn.com.newloading.bean.TGoods" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List1" />
+    ,m.m_name as mName,m.m_code as mCode,m.id as mid
+    from t_goods g inner join t_merchant m on g.m_id = m.id
+    <where>
+      1 = 1
+      <if test="mId != null">
+        and g.m_id = #{mId,jdbcType=BIGINT}
+      </if>
+      <if test="gType != null">
+        and g.g_type = #{gType,jdbcType=BIGINT}
+      </if>
+      <if test="status != null">
+        and g.`status` = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="gTitle != null">
+        and ( g.g_title like concat('%',#{gTitle,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="gDetail != null">
+        or g.g_detail like concat('%', #{gDetail,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="gAuthor != null">
+        or g.g_author like concat('%',#{gAuthor,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="gPress != null">
+        or g.g_press like concat('%',#{gPress,jdbcType=VARCHAR},'%') )
+      </if>
+    </where>
+    limit #{begin,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+  </select>
+  <select id="doQueryForUser" parameterType="cn.com.newloading.bean.TGoods" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List1" />
+    ,m.m_name as mName,m.m_code as mCode,m.id as mid
+<!--    ,gi.img_url as imgPath,gi.img_title as imgTitle  -->
+    from t_goods g inner join t_merchant m on g.m_id = m.id
+<!--    inner join t_goods_img gi on gi.g_id = g.id  -->
+    <where>
+      1 = 1
+      <if test="mId != null">
+        and g.id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="mId != null">
+        and g.m_id = #{mId,jdbcType=BIGINT}
+      </if>
+      <if test="status != null">
+        and g.`status` = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="gTitle != null">
+        and ( g.g_title like concat('%',#{gTitle,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="gDetail != null">
+        or g.g_detail like concat('%', #{gDetail,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="gAuthor != null">
+        or g.g_author like concat('%',#{gAuthor,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="gPress != null">
+        or g.g_press like concat('%',#{gPress,jdbcType=VARCHAR},'%') )
+      </if>
+      <if test="typeIds != null">
+        and g.g_type in
+        <foreach collection="typeIds.split(',')" item="tid" open="(" close=")" separator=",">
+          #{tid}
+        </foreach>
+      </if>
+    </where>
+<!--    GROUP BY g.id -->
+    limit #{begin,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+  </select>
+  <select id="queryType" resultType="cn.com.newloading.bean.TGoodsType">
+    select id,t_name as tName from t_goods_type
+  </select>
+</mapper>

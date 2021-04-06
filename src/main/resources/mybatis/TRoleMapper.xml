@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.newloading.dao.TRoleDao">
+  <resultMap id="BaseResultMap" type="cn.com.newloading.bean.TRole">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="r_name" jdbcType="VARCHAR" property="rName" />
+    <result column="r_code" jdbcType="VARCHAR" property="rCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, r_name, r_code
+  </sql>
+  <sql id="Base_Column_List1">
+    r.id, r.r_name, r.r_code
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_role
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_role
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TRole" useGeneratedKeys="true">
+    insert into t_role (r_name, r_code)
+    values (#{rName,jdbcType=VARCHAR}, #{rCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TRole" useGeneratedKeys="true">
+    insert into t_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rName != null">
+        r_name,
+      </if>
+      <if test="rCode != null">
+        r_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rName != null">
+        #{rName,jdbcType=VARCHAR},
+      </if>
+      <if test="rCode != null">
+        #{rCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.newloading.bean.TRole">
+    update t_role
+    <set>
+      <if test="rName != null">
+        r_name = #{rName,jdbcType=VARCHAR},
+      </if>
+      <if test="rCode != null">
+        r_code = #{rCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.newloading.bean.TRole">
+    update t_role
+    set r_name = #{rName,jdbcType=VARCHAR},
+      r_code = #{rCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="doQuery" parameterType="cn.com.newloading.bean.TRole" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_role
+    <where>
+        1 = 1
+      <if test="rName != null">
+        and r_name like concat('%',#{rName,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="rCode != null">
+        and r_code like concat('%',#{rCode,jdbcType=VARCHAR},'%')
+      </if>
+    </where>
+  </select>
+  <select id="chenckRoleUsed" resultType="java.lang.Integer">
+    select count(*)
+    from t_admin_role
+    where r_id = #{rid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteMenuByRoleId">
+    delete from t_role_menu
+    where r_id = #{rid,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteRoleByAid">
+    delete from t_admin_role
+    where a_id = #{aid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertRoleMenu">
+      insert into t_role_menu (r_id, m_id)
+      values (#{rid,jdbcType=BIGINT}, #{mid,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertAdminRole">
+    insert into t_admin_role (a_id, r_id)
+    values (#{aid,jdbcType=BIGINT}, #{rid,jdbcType=BIGINT})
+  </insert>
+  <select id="checkReleCode" resultType="java.lang.Integer">
+    select count(*)
+    from t_role
+    where r_code = #{rCode,jdbcType=VARCHAR}
+  </select>
+  <select id="getRoleByAid" resultType="java.lang.Long">
+    select r_id from t_admin_role where a_id = #{aid}
+  </select>
+</mapper>

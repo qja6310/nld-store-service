@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.newloading.dao.TShoppingCarDao">
+  <resultMap id="BaseResultMap" type="cn.com.newloading.bean.TShoppingCar">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="u_id" jdbcType="BIGINT" property="uId" />
+    <result column="g_id" jdbcType="BIGINT" property="gId" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="payMoney" jdbcType="VARCHAR" property="paymoney" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap1" type="cn.com.newloading.bean.TShoppingCar">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="u_id" jdbcType="BIGINT" property="uId" />
+    <result column="g_id" jdbcType="BIGINT" property="gId" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="payMoney" jdbcType="VARCHAR" property="paymoney" />
+    <result column="gid" jdbcType="BIGINT" property="goods.id" />
+    <result column="m_id" jdbcType="BIGINT" property="goods.mId" />
+    <result column="g_title" jdbcType="VARCHAR" property="goods.gTitle" />
+    <result column="g_detail" jdbcType="VARCHAR" property="goods.gDetail" />
+    <result column="g_price" jdbcType="DECIMAL" property="goods.gPrice" />
+    <result column="g_inventory" jdbcType="INTEGER" property="goods.gInventory" />
+    <result column="status" jdbcType="VARCHAR" property="goods.status" />
+    <result column="g_author" jdbcType="VARCHAR" property="goods.gAuthor" />
+    <result column="g_press" jdbcType="VARCHAR" property="goods.gPress" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, u_id, g_id, `count`, payMoney
+  </sql>
+  <sql id="Base_Column_List1">
+    sc.id, sc.u_id, sc.g_id, sc.`count`, sc.payMoney
+  </sql>
+  <sql id="Base_Column_List2">
+    g.id as gid, g.m_id, g.g_title, g.g_detail, g.g_price, g.g_inventory, g.`status`, g.g_author,g.g_press
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_shopping_car
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_shopping_car
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TShoppingCar" useGeneratedKeys="true">
+    insert into t_shopping_car (u_id, g_id, `count`, 
+      payMoney)
+    values (#{uId,jdbcType=BIGINT}, #{gId,jdbcType=BIGINT}, #{count,jdbcType=INTEGER}, 
+      #{paymoney,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TShoppingCar" useGeneratedKeys="true">
+    insert into t_shopping_car
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        u_id,
+      </if>
+      <if test="gId != null">
+        g_id,
+      </if>
+      <if test="count != null">
+        `count`,
+      </if>
+      <if test="paymoney != null">
+        payMoney,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        #{uId,jdbcType=BIGINT},
+      </if>
+      <if test="gId != null">
+        #{gId,jdbcType=BIGINT},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="paymoney != null">
+        #{paymoney,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.newloading.bean.TShoppingCar">
+    update t_shopping_car
+    <set>
+      <if test="uId != null">
+        u_id = #{uId,jdbcType=BIGINT},
+      </if>
+      <if test="gId != null">
+        g_id = #{gId,jdbcType=BIGINT},
+      </if>
+      <if test="count != null">
+        `count` = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="paymoney != null">
+        payMoney = #{paymoney,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.newloading.bean.TShoppingCar">
+    update t_shopping_car
+    set u_id = #{uId,jdbcType=BIGINT},
+      g_id = #{gId,jdbcType=BIGINT},
+      `count` = #{count,jdbcType=INTEGER},
+      payMoney = #{paymoney,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="queryTrolleyByUid" resultMap="BaseResultMap1">
+    SELECT
+      <include refid="Base_Column_List1"/>
+           ,
+      <include refid="Base_Column_List2"/>
+    FROM
+      t_shopping_car sc
+        INNER JOIN t_goods g ON g.id = sc.g_id
+    WHERE
+      sc.u_id = #{uid,jdbcType=BIGINT}
+      AND g.`status` = '70'
+  </select>
+</mapper>

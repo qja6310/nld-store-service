@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.newloading.dao.TOrderProgressDao">
+  <resultMap id="BaseResultMap" type="cn.com.newloading.bean.TOrderProgress">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="o_id" jdbcType="BIGINT" property="oId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="op_remark" jdbcType="VARCHAR" property="opRemark" />
+    <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, o_id, `status`, op_remark, operate_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_order_progress
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_order_progress
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TOrderProgress" useGeneratedKeys="true">
+    insert into t_order_progress (o_id, `status`, op_remark, 
+      operate_time)
+    values (#{oId,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, #{opRemark,jdbcType=VARCHAR}, 
+      #{operateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TOrderProgress" useGeneratedKeys="true">
+    insert into t_order_progress
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oId != null">
+        o_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="opRemark != null">
+        op_remark,
+      </if>
+      <if test="operateTime != null">
+        operate_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oId != null">
+        #{oId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="opRemark != null">
+        #{opRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null">
+        #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.newloading.bean.TOrderProgress">
+    update t_order_progress
+    <set>
+      <if test="oId != null">
+        o_id = #{oId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="opRemark != null">
+        op_remark = #{opRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null">
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.newloading.bean.TOrderProgress">
+    update t_order_progress
+    set o_id = #{oId,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=VARCHAR},
+      op_remark = #{opRemark,jdbcType=VARCHAR},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="queryByOid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_order_progress where o_id = #{oid,jdbcType=BIGINT}
+    order by operate_time desc
+  </select>
+</mapper>

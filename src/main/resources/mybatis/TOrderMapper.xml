@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.newloading.dao.TOrderDao">
+  <resultMap id="BaseResultMap" type="cn.com.newloading.bean.TOrder">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="u_id" jdbcType="BIGINT" property="uId" />
+    <result column="m_id" jdbcType="BIGINT" property="mId" />
+    <result column="g_id" jdbcType="BIGINT" property="gId" />
+    <result column="o_number" jdbcType="VARCHAR" property="oNumber" />
+    <result column="con_name" jdbcType="VARCHAR" property="conName" />
+    <result column="con_phone" jdbcType="VARCHAR" property="conPhone" />
+    <result column="con_addr" jdbcType="VARCHAR" property="conAddr" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="pay_money" jdbcType="VARCHAR" property="payMoney" />
+    <result column="o_remark" jdbcType="VARCHAR" property="oRemark" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="c_time" jdbcType="TIMESTAMP" property="cTime" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap1" type="cn.com.newloading.bean.TOrder">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="u_id" jdbcType="BIGINT" property="uId" />
+    <result column="m_id" jdbcType="BIGINT" property="mId" />
+    <result column="g_id" jdbcType="BIGINT" property="gId" />
+    <result column="o_number" jdbcType="VARCHAR" property="oNumber" />
+    <result column="con_name" jdbcType="VARCHAR" property="conName" />
+    <result column="con_phone" jdbcType="VARCHAR" property="conPhone" />
+    <result column="con_addr" jdbcType="VARCHAR" property="conAddr" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="pay_money" jdbcType="VARCHAR" property="payMoney" />
+    <result column="o_remark" jdbcType="VARCHAR" property="oRemark" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="c_time" jdbcType="TIMESTAMP" property="cTime" />
+    <result column="gid" jdbcType="BIGINT" property="goods.id" />
+    <result column="m_id" jdbcType="BIGINT" property="goods.mId" />
+    <result column="g_title" jdbcType="VARCHAR" property="goods.gTitle" />
+    <result column="g_detail" jdbcType="VARCHAR" property="goods.gDetail" />
+    <result column="g_price" jdbcType="DECIMAL" property="goods.gPrice" />
+    <result column="g_inventory" jdbcType="INTEGER" property="goods.gInventory" />
+    <result column="status" jdbcType="VARCHAR" property="goods.status" />
+    <result column="g_author" jdbcType="VARCHAR" property="goods.gAuthor" />
+    <result column="g_press" jdbcType="VARCHAR" property="goods.gPress" />
+    <result column="m_name" jdbcType="VARCHAR" property="merchant.mName" />
+    <result column="m_code" jdbcType="VARCHAR" property="merchant.mCode" />
+    <result column="mid" jdbcType="BIGINT" property="merchant.id" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, u_id, m_id, g_id, o_number, con_name, con_phone, con_addr, `count`, pay_money, 
+    o_remark, `status`, c_time
+  </sql>
+
+  <sql id="Base_Column_List1">
+    o.id, o.u_id, o.m_id, o.g_id, o.o_number, o.con_name, o.con_phone, o.con_addr, o.`count`, o.pay_money,
+    o.o_remark, o.`status`, o.c_time
+  </sql>
+
+  <sql id="Base_Column_List2">
+    g.id as gid, g.m_id, g.g_title, g.g_detail, g.g_price, g.g_inventory, g.`status`, g.g_author,g.g_press
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TOrder" useGeneratedKeys="true">
+    insert into t_order (u_id, m_id, g_id, o_number, 
+      con_name, con_phone, con_addr, 
+      `count`, pay_money, o_remark, 
+      `status`, c_time)
+    values (#{uId,jdbcType=BIGINT}, #{mId,jdbcType=BIGINT}, #{gId,jdbcType=BIGINT}, #{oNumber,jdbcType=VARCHAR}, 
+      #{conName,jdbcType=VARCHAR}, #{conPhone,jdbcType=VARCHAR}, #{conAddr,jdbcType=VARCHAR}, 
+      #{count,jdbcType=INTEGER}, #{payMoney,jdbcType=VARCHAR}, #{oRemark,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TOrder" useGeneratedKeys="true">
+    insert into t_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        u_id,
+      </if>
+      <if test="mId != null">
+        m_id,
+      </if>
+      <if test="gId != null">
+        g_id,
+      </if>
+      <if test="oNumber != null">
+        o_number,
+      </if>
+      <if test="conName != null">
+        con_name,
+      </if>
+      <if test="conPhone != null">
+        con_phone,
+      </if>
+      <if test="conAddr != null">
+        con_addr,
+      </if>
+      <if test="count != null">
+        `count`,
+      </if>
+      <if test="payMoney != null">
+        pay_money,
+      </if>
+      <if test="oRemark != null">
+        o_remark,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="cTime != null">
+        c_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        #{uId,jdbcType=BIGINT},
+      </if>
+      <if test="mId != null">
+        #{mId,jdbcType=BIGINT},
+      </if>
+      <if test="gId != null">
+        #{gId,jdbcType=BIGINT},
+      </if>
+      <if test="oNumber != null">
+        #{oNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="conName != null">
+        #{conName,jdbcType=VARCHAR},
+      </if>
+      <if test="conPhone != null">
+        #{conPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="conAddr != null">
+        #{conAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="payMoney != null">
+        #{payMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="oRemark != null">
+        #{oRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="cTime != null">
+        #{cTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.newloading.bean.TOrder">
+    update t_order
+    <set>
+      <if test="uId != null">
+        u_id = #{uId,jdbcType=BIGINT},
+      </if>
+      <if test="mId != null">
+        m_id = #{mId,jdbcType=BIGINT},
+      </if>
+      <if test="gId != null">
+        g_id = #{gId,jdbcType=BIGINT},
+      </if>
+      <if test="oNumber != null">
+        o_number = #{oNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="conName != null">
+        con_name = #{conName,jdbcType=VARCHAR},
+      </if>
+      <if test="conPhone != null">
+        con_phone = #{conPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="conAddr != null">
+        con_addr = #{conAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        `count` = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="payMoney != null">
+        pay_money = #{payMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="oRemark != null">
+        o_remark = #{oRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="cTime != null">
+        c_time = #{cTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.newloading.bean.TOrder">
+    update t_order
+    set u_id = #{uId,jdbcType=BIGINT},
+      m_id = #{mId,jdbcType=BIGINT},
+      g_id = #{gId,jdbcType=BIGINT},
+      o_number = #{oNumber,jdbcType=VARCHAR},
+      con_name = #{conName,jdbcType=VARCHAR},
+      con_phone = #{conPhone,jdbcType=VARCHAR},
+      con_addr = #{conAddr,jdbcType=VARCHAR},
+      `count` = #{count,jdbcType=INTEGER},
+      pay_money = #{payMoney,jdbcType=VARCHAR},
+      o_remark = #{oRemark,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      c_time = #{cTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="query" parameterType="cn.com.newloading.bean.TOrder" resultMap="BaseResultMap1">
+    SELECT
+      <include refid="Base_Column_List1" />
+           ,
+      <include refid="Base_Column_List2"/>
+           ,
+      m.m_name,m.m_code,m.id as mid
+    FROM
+      t_order o
+        INNER JOIN t_goods g ON g.id = o.g_id
+        INNER JOIN t_merchant m ON m.id = o.m_id
+    WHERE
+        1 = 1
+    <if test="uId != null">
+      and o.u_id = #{uId,jdbcType=BIGINT}
+    </if>
+    <if test="mId != null">
+      and o.m_id = #{mId,jdbcType=BIGINT}
+    </if>
+    <if test="status != null">
+      and o.status = #{status,jdbcType=VARCHAR}
+    </if>
+    <if test="oNumber != null">
+      and o.o_number like concat('%',#{oNumber,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="mName != null">
+      and m.m_name like concat('%',#{mName,jdbcType=VARCHAR},'%')
+    </if>
+    ORDER BY o.c_time DESC
+    LIMIT #{begin,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+  </select>
+  <select id="sales" resultType="java.util.HashMap">
+    SELECT
+      IFNULL( SUM( o.pay_money ), 0 ) AS sum,
+      IFNULL( COUNT( 0 ), 0 ) AS count
+    FROM
+      t_order o
+    WHERE
+      o.`status` = '60'
+      <if test="mid != null">
+        o.m_id = #{mid,jdbcType=BIGINT}
+      </if>
+      AND YEAR ( o.c_time ) = #{year,jdbcType=INTEGER}
+      AND MONTH ( o.c_time ) = #{month,jdbcType=INTEGER}
+  </select>
+</mapper>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.newloading.dao.TUserDao">
+  <resultMap id="BaseResultMap" type="cn.com.newloading.bean.TUser">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="u_name" jdbcType="VARCHAR" property="uName" />
+    <result column="u_pwd" jdbcType="VARCHAR" property="uPwd" />
+    <result column="u_acc" jdbcType="VARCHAR" property="uAcc" />
+    <result column="u_identify" jdbcType="VARCHAR" property="uIdentify" />
+    <result column="u_phone" jdbcType="VARCHAR" property="uPhone" />
+    <result column="u_email" jdbcType="VARCHAR" property="uEmail" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, u_name, u_pwd, u_acc, u_identify, u_phone, u_email
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TUser" useGeneratedKeys="true">
+    insert into t_user (u_name, u_pwd, u_acc, 
+      u_identify, u_phone, u_email
+      )
+    values (#{uName,jdbcType=VARCHAR}, #{uPwd,jdbcType=VARCHAR}, #{uAcc,jdbcType=VARCHAR}, 
+      #{uIdentify,jdbcType=VARCHAR}, #{uPhone,jdbcType=VARCHAR}, #{uEmail,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TUser" useGeneratedKeys="true">
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uName != null">
+        u_name,
+      </if>
+      <if test="uPwd != null">
+        u_pwd,
+      </if>
+      <if test="uAcc != null">
+        u_acc,
+      </if>
+      <if test="uIdentify != null">
+        u_identify,
+      </if>
+      <if test="uPhone != null">
+        u_phone,
+      </if>
+      <if test="uEmail != null">
+        u_email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uName != null">
+        #{uName,jdbcType=VARCHAR},
+      </if>
+      <if test="uPwd != null">
+        #{uPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="uAcc != null">
+        #{uAcc,jdbcType=VARCHAR},
+      </if>
+      <if test="uIdentify != null">
+        #{uIdentify,jdbcType=VARCHAR},
+      </if>
+      <if test="uPhone != null">
+        #{uPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="uEmail != null">
+        #{uEmail,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.newloading.bean.TUser">
+    update t_user
+    <set>
+      <if test="uName != null">
+        u_name = #{uName,jdbcType=VARCHAR},
+      </if>
+      <if test="uPwd != null">
+        u_pwd = #{uPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="uAcc != null">
+        u_acc = #{uAcc,jdbcType=VARCHAR},
+      </if>
+      <if test="uIdentify != null">
+        u_identify = #{uIdentify,jdbcType=VARCHAR},
+      </if>
+      <if test="uPhone != null">
+        u_phone = #{uPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="uEmail != null">
+        u_email = #{uEmail,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.newloading.bean.TUser">
+    update t_user
+    set u_name = #{uName,jdbcType=VARCHAR},
+      u_pwd = #{uPwd,jdbcType=VARCHAR},
+      u_acc = #{uAcc,jdbcType=VARCHAR},
+      u_identify = #{uIdentify,jdbcType=VARCHAR},
+      u_phone = #{uPhone,jdbcType=VARCHAR},
+      u_email = #{uEmail,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="checkAccIsExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM t_user WHERE u_acc = #{uAcc,jdbcType=VARCHAR}
+  </select>
+  <select id="checkAccIsExist2" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM t_user WHERE u_acc = #{uAcc,jdbcType=VARCHAR} and id != #{id,jdbcType=BIGINT}
+  </select>
+  <select id="doLogin" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where u_acc = #{uAcc,jdbcType=VARCHAR}
+    AND u_pwd = #{uPwd,jdbcType=VARCHAR}
+  </select>
+</mapper>

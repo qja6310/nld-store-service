@@ -1,0 +1,17 @@
+/*.company_agent,.person_ag{
+	overflow-x: scroll;
+}*/
+/*#company_agent{
+	display: none;
+}*/
+/*.company_agent .layui-table{
+	width: 125%;
+}
+.person_ag .layui-table{
+	width: 120%;
+}*/
+#person_page,#company_page{
+	/* text-align: center; */
+	display: flex;
+	justify-content: center;
+}
