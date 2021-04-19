@@ -15,6 +15,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <title>图书商城首页</title>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css">
+<link rel="stylesheet" href="<%=request.getContextPath() %>/newloading/css/common.css">
 <script type="text/javascript" src="<%=request.getContextPath() %>/assets/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/js/layui.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/newloading/js/common/common.js"></script>
@@ -27,7 +28,7 @@
 		}
 	</style>
 </head>
-<body class="layui-layout-body">
+<body class="layui-layout-body"> <!-- style="background: #eeeeee;" -->
 <input type="hidden" id="uid" value="${user.id}"/>
 <input type="hidden" id="url" value="${url}"/>
 <div class="layui-layout layui-layout-admin">
@@ -42,7 +43,7 @@
 		</c:if>
 		<ul class="layui-nav layui-layout-right">
 			<li class="layui-nav-item">
-				<a onclick="skipPage('70')">
+				<a onclick="skipPage('70')" style="cursor: pointer;">
 					<img src="http://t.cn/RCzsdCq" class="layui-nav-img">
 					<c:if test="${not empty user}">${user.uName}</c:if>
 					<c:if test="${empty user}">未登录</c:if>

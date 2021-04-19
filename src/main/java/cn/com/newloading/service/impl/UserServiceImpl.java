@@ -2,8 +2,10 @@ package cn.com.newloading.service.impl;
 
 import cn.com.newloading.bean.TAddress;
 import cn.com.newloading.bean.TUser;
+import cn.com.newloading.bean.UserWalletRecord;
 import cn.com.newloading.dao.TAddressDao;
 import cn.com.newloading.dao.TUserDao;
+import cn.com.newloading.dao.UserWalletRecordDao;
 import cn.com.newloading.service.UserService;
 import cn.com.newloading.utils.Result;
 import com.alibaba.fastjson.JSONArray;
@@ -13,6 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -21,12 +29,16 @@ public class UserServiceImpl implements UserService {
 	private TUserDao userDao;
 	@Autowired
 	private TAddressDao addrDao;
+	@Autowired
+	private UserWalletRecordDao recordDao;
 
 	@Override
 	public Result doRegister(TUser user, String addrJsonStr) {
 		//校验账号是否存在，登录账号需唯一
+		user.setuWallet(BigDecimal.ZERO);
 		int c = userDao.checkAccIsExist(user.getuAcc());
 		if(c == 0){
+			user.setuWallet(BigDecimal.ZERO);
 			userDao.insertSelective(user);//插入注册
 			addAddr(addrJsonStr,user.getId());
 			return new Result("U00","注册成功");
@@ -61,6 +73,48 @@ public class UserServiceImpl implements UserService {
 			return new Result("U00","操作成功");
 		}
 		return new Result("U77","发生异常，请重试");
+	}
+
+	@Override
+	public Map<String, Object> wallet(String uid) {
+		Map<String,Object> map = new HashMap<>();
+		TUser user = userDao.selectByPrimaryKey(Long.valueOf(uid));
+		map.put("yue",user.getuWallet());
+		List<UserWalletRecord> records = recordDao.queryByUid(Long.valueOf(uid));
+		map.put("records",records);
+		return map;
+	}
+
+	@Override
+	public Result recharge(UserWalletRecord record) {
+		TUser user = userDao.selectByPrimaryKey(record.getUid());
+		double m = user.getuWallet().doubleValue() + record.getMoney().doubleValue();
+		BigDecimal yue = BigDecimal.valueOf(m);
+		//修改用户钱包
+		userDao.recharge(yue,user.getId());
+		//插入账单
+		record.setYue(yue);
+		record.setOpreateTime(new Date());
+		record.setType("10");
+		int i = recordDao.insertSelective(record);
+		if(i > 0) return new Result("U00","操作成功");
+		return new Result("U99","操作失败");
+	}
+
+	@Override
+	public Result tx(UserWalletRecord record) {
+		TUser user = userDao.selectByPrimaryKey(record.getUid());
+		double m = user.getuWallet().doubleValue() - record.getMoney().doubleValue();
+		if(m < 0.0) return new Result("U88","您的余额不足");
+		BigDecimal yue = BigDecimal.valueOf(m);
+		//修改用户钱包
+		userDao.recharge(yue,user.getId());
+		record.setYue(yue);
+		record.setOpreateTime(new Date());
+		record.setType("40");
+		int i = recordDao.insertSelective(record);
+		if(i > 0) return new Result("U00","操作成功");
+		return new Result("U99","操作失败");
 	}
 
 	/**

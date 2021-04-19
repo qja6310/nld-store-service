@@ -78,3 +78,10 @@ function getAddr() {
     });
     return arr;
 }
+
+/**
+ * 钱包
+ */
+function myWallet() {
+    $('#mainContontDiv').load(base + '/user/wallet?uid='+$('#uid').val());
+}

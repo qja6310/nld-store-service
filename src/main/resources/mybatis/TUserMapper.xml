@@ -9,9 +9,10 @@
     <result column="u_identify" jdbcType="VARCHAR" property="uIdentify" />
     <result column="u_phone" jdbcType="VARCHAR" property="uPhone" />
     <result column="u_email" jdbcType="VARCHAR" property="uEmail" />
+    <result column="u_wallet" jdbcType="DECIMAL" property="uWallet" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, u_name, u_pwd, u_acc, u_identify, u_phone, u_email
+    id, u_name, u_pwd, u_acc, u_identify, u_phone, u_email,u_wallet
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -25,10 +26,10 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TUser" useGeneratedKeys="true">
     insert into t_user (u_name, u_pwd, u_acc, 
-      u_identify, u_phone, u_email
+      u_identify, u_phone, u_email,u_wallet
       )
     values (#{uName,jdbcType=VARCHAR}, #{uPwd,jdbcType=VARCHAR}, #{uAcc,jdbcType=VARCHAR}, 
-      #{uIdentify,jdbcType=VARCHAR}, #{uPhone,jdbcType=VARCHAR}, #{uEmail,jdbcType=VARCHAR}
+      #{uIdentify,jdbcType=VARCHAR}, #{uPhone,jdbcType=VARCHAR}, #{uEmail,jdbcType=VARCHAR},#{uWallet,jdbcType=DECIMAL}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TUser" useGeneratedKeys="true">
@@ -52,6 +53,9 @@
       <if test="uEmail != null">
         u_email,
       </if>
+      <if test="u_wallet != null">
+        u_wallet,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uName != null">
@@ -71,6 +75,9 @@
       </if>
       <if test="uEmail != null">
         #{uEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="uWallet != null">
+        #{uWallet,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -94,6 +101,9 @@
       </if>
       <if test="uEmail != null">
         u_email = #{uEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="uWallet != null">
+        u_wallet = #{uWallet,jdbcType=DECIMAL},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -121,4 +131,7 @@
     where u_acc = #{uAcc,jdbcType=VARCHAR}
     AND u_pwd = #{uPwd,jdbcType=VARCHAR}
   </select>
+  <update id="recharge">
+    update t_user set u_wallet = #{money,jdbcType=DECIMAL} where id = #{uid,jdbcType=BIGINT}
+  </update>
 </mapper>

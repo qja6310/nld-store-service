@@ -1,6 +1,7 @@
 package cn.com.newloading.bean;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -40,6 +41,11 @@ public class TUser implements Serializable {
      */
     private String uEmail;
 
+    /**
+     * 钱包
+     */
+    private BigDecimal uWallet;
+
     private List<TAddress> addressList;
 
     private static final long serialVersionUID = 1L;
@@ -50,6 +56,14 @@ public class TUser implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public BigDecimal getuWallet() {
+        return uWallet;
+    }
+
+    public void setuWallet(BigDecimal uWallet) {
+        this.uWallet = uWallet;
     }
 
     public String getuName() {

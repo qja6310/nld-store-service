@@ -4,18 +4,15 @@ import cn.com.newloading.bean.TGoods;
 import cn.com.newloading.bean.TMerchant;
 import cn.com.newloading.bean.TOrder;
 import cn.com.newloading.bean.TUser;
-import cn.com.newloading.config.AlipayConfig;
 import cn.com.newloading.service.GoodsService;
 import cn.com.newloading.service.MerchantService;
 import cn.com.newloading.service.OrderService;
 import cn.com.newloading.service.UserService;
+import cn.com.newloading.utils.Alipay;
 import cn.com.newloading.utils.Common;
 import cn.com.newloading.utils.DateUtil;
 import cn.com.newloading.utils.Result;
 import com.alibaba.fastjson.JSONObject;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.request.AlipayTradePagePayRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -143,7 +139,7 @@ public class OrderController extends BaseController {
     }
 
     @RequestMapping(value = "/toPay")
-    public void toPay(HttpServletRequest req, HttpServletResponse response) throws Exception {
+    public void toPay(HttpServletRequest req, HttpServletResponse response)throws Exception {
         /**
          * 先查询订单，如果订单不存在，再创建订单
          */
@@ -156,37 +152,8 @@ public class OrderController extends BaseController {
             //创建订单
             order = createOrder(req);
         }
-        //获得初始化的AlipayClient
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
-
-        //设置请求参数
-        AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
-        alipayRequest.setReturnUrl(AlipayConfig.return_url);
-        alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
-
-        //商户订单号，商户网站订单系统中唯一订单号，必填
-        String out_trade_no = order.getoNumber();
-//        付款金额，必填
-        String total_amount = order.getPayMoney();
-        //订单名称，必填
-        String subject = order.getoNumber();
-        //商品描述，可空
-        String body = "";
-
-        alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\","
-                + "\"total_amount\":\""+ total_amount +"\","
-                + "\"subject\":\""+ subject +"\","
-                + "\"body\":\""+ body +"\","
-                + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
-
-        //请求
-        String result = alipayClient.pageExecute(alipayRequest).getBody();
-
-        response.setCharacterEncoding("UTF-8");//设置将字符以"UTF-8"编码输出到客户端浏览器
-        //通过设置响应头控制浏览器以UTF-8的编码显示数据
-        response.setHeader("content-type", "text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.write(result);
+        Alipay alipay = new Alipay(order.getoNumber(),order.getPayMoney(),order.getoNumber());
+        AliPayController.useAlipay(req,response,alipay,"/order/callBack");
     }
 
     /**
@@ -231,6 +198,7 @@ public class OrderController extends BaseController {
             String oid = String.valueOf(order.getId());
             String url = "/order/detail?oid="+oid+"&r=u";
             request.getSession().setAttribute("url",url);
+            request.getSession().removeAttribute("order");
         }else{
             model.addAttribute("msg","修改状态失败");
         }

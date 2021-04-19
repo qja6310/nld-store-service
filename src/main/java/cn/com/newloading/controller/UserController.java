@@ -1,9 +1,13 @@
 package cn.com.newloading.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import cn.com.newloading.bean.TAddress;
 import cn.com.newloading.bean.TUser;
+import cn.com.newloading.bean.UserWalletRecord;
+import cn.com.newloading.utils.Alipay;
+import cn.com.newloading.utils.DateUtil;
 import cn.com.newloading.utils.Result;
 import com.alibaba.fastjson.JSONArray;
 import org.slf4j.Logger;
@@ -20,6 +24,10 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.com.newloading.service.UserService;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -174,5 +182,69 @@ public class UserController extends BaseController{
 		String url = (String) getParams(request);
 		request.getSession().setAttribute("url",url);
 		return new Result("U99","");
+	}
+
+	@RequestMapping("/wallet")
+	public String myWallet(HttpServletRequest request,Model model){
+		String uid = request.getParameter("uid");
+		Map<String, Object> map = userService.wallet(uid);
+		model.addAttribute("data",map);
+		model.addAttribute("uid",uid);
+		return "user/wallet";
+	}
+
+	@RequestMapping("/recharge")
+	public void recharge(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String uid = request.getParameter("uid");
+		String money = request.getParameter("money");
+		UserWalletRecord record = new UserWalletRecord();
+		record.setUid(Long.valueOf(uid).longValue());
+		record.setMoney(BigDecimal.valueOf(Double.valueOf(money)));
+		request.getSession().setAttribute("user_wallet_record",record);
+		String no = DateUtil.dateToString(new Date(),"yyyyMMddhhmmssSSS");
+		String name = "充值我的钱包";
+		Alipay alipay = new Alipay(no,money,name);
+		String callBackUrl = "/user/recharge/callBack";
+		AliPayController.useAlipay(request,response,alipay,callBackUrl);
+	}
+
+	@RequestMapping("/recharge/callBack")
+	public String callBack(HttpServletRequest request,Model model){
+		UserWalletRecord record = (UserWalletRecord) request.getSession().getAttribute("user_wallet_record");
+		TUser user = (TUser) request.getSession().getAttribute("user");
+		String httpPrefix = request.getContextPath();
+		logger.info("===========httpPrefix="+httpPrefix);
+		if(user == null){
+			model.addAttribute("msg","登录信息已过期");
+			return "redirect:" + httpPrefix + "/system/userIndex";
+		}
+		//TODO  执行业务
+		Result result = userService.recharge(record);
+		if("U00".equals(result.getCode())){
+			model.addAttribute("msg","登录信息已过期");
+			return "redirect:" + httpPrefix + "/system/userIndex";
+		}
+		String url = "/user/wallet?uid="+user.getId();
+		request.getSession().setAttribute("url",url);
+		return "redirect:" + httpPrefix + "/system/userIndex";
+	}
+
+	/**
+	 * 提现
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/tx")
+	@ResponseBody
+	public Result tx(HttpServletRequest request){
+		JSONObject jsonObject = (JSONObject) getParams(request);
+		String uid = jsonObject.getString("uid");
+		String txmoney = jsonObject.getString("txmoney");
+		String cardNo = jsonObject.getString("cardNo");
+		UserWalletRecord record = new UserWalletRecord();
+		record.setUid(Long.valueOf(uid));
+		record.setMoney(new BigDecimal(txmoney));
+		record.setCardNo(cardNo);
+		return userService.tx(record);
 	}
 }

@@ -1,12 +1,18 @@
 package cn.com.newloading.controller;
 
+import cn.com.newloading.config.AlipayConfig;
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradePagePayRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 
 public class BaseController {
 
@@ -44,7 +50,7 @@ public class BaseController {
     }
 
     /**
-     * 参数
+     * 参数  判断非空，需要传参到model中
      * @param request
      * @param model
      * @param paramName

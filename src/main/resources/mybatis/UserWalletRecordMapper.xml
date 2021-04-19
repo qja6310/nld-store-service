@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.newloading.dao.UserWalletRecordDao">
+  <resultMap id="BaseResultMap" type="cn.com.newloading.bean.UserWalletRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="money" jdbcType="DECIMAL" property="money" />
+    <result column="yue" jdbcType="DECIMAL" property="yue" />
+    <result column="card_no" jdbcType="VARCHAR" property="cardNo" />
+    <result column="opreate_time" jdbcType="TIMESTAMP" property="opreateTime" />
+    <result column="uwr_remark" jdbcType="VARCHAR" property="uwrRemark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `uid`, `type`, money, yue, card_no, opreate_time, uwr_remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_wallet_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user_wallet_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.UserWalletRecord" useGeneratedKeys="true">
+    insert into user_wallet_record (`uid`, `type`, money, yue,
+      card_no, opreate_time, uwr_remark
+      )
+    values (#{uid,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, #{yue,jdbcType=DECIMAL},
+            #{cardNo,jdbcType=VARCHAR}, #{opreateTime,jdbcType=TIMESTAMP}, #{uwrRemark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.UserWalletRecord" useGeneratedKeys="true">
+    insert into user_wallet_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        `uid`,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="yue != null">
+        yue,
+      </if>
+      <if test="cardNo != null">
+        card_no,
+      </if>
+      <if test="opreateTime != null">
+        opreate_time,
+      </if>
+      <if test="uwrRemark != null">
+        uwr_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="yue != null">
+        #{yue,jdbcType=DECIMAL},
+      </if>
+      <if test="cardNo != null">
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="opreateTime != null">
+        #{opreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uwrRemark != null">
+        #{uwrRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.newloading.bean.UserWalletRecord">
+    update user_wallet_record
+    <set>
+      <if test="uid != null">
+        `uid` = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="cardNo != null">
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="opreateTime != null">
+        opreate_time = #{opreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uwrRemark != null">
+        uwr_remark = #{uwrRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.newloading.bean.UserWalletRecord">
+    update user_wallet_record
+    set `uid` = #{uid,jdbcType=BIGINT},
+      `type` = #{type,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      card_no = #{cardNo,jdbcType=VARCHAR},
+      opreate_time = #{opreateTime,jdbcType=TIMESTAMP},
+      uwr_remark = #{uwrRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="queryByUid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from
+    user_wallet_record
+    where uid = #{uid,jdbcType=BIGINT}
+  </select>
+</mapper>

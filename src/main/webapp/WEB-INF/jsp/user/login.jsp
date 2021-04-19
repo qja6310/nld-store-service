@@ -41,13 +41,13 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">账号</label>
 					<div class="layui-input-inline">
-						<input type="text" id="uAcc" name="uAcc" value="" autocomplete="off" placeholder="请输入账号" class="layui-input verify">
+						<input type="text" id="uAcc" name="uAcc" value="huzuofei.u" autocomplete="off" placeholder="请输入账号" class="layui-input verify">
 					</div>
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">密码</label>
 					<div class="layui-input-inline">
-						<input type="password" id="uPwd" name="uPwd" value="" autocomplete="off" placeholder="请输入密码" class="layui-input verify">
+						<input type="password" id="uPwd" name="uPwd" value="123456" autocomplete="off" placeholder="请输入密码" class="layui-input verify">
 					</div>
 				</div>
 			</div>
