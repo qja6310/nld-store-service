@@ -5,12 +5,18 @@ import cn.com.newloading.bean.TGoodsImg;
 import cn.com.newloading.bean.TMerchant;
 import cn.com.newloading.bean.TOrder;
 import cn.com.newloading.bean.TOrderProgress;
+import cn.com.newloading.bean.TUser;
+import cn.com.newloading.bean.UserWalletRecord;
 import cn.com.newloading.dao.TGoodsDao;
 import cn.com.newloading.dao.TGoodsImgDao;
 import cn.com.newloading.dao.TMerchantDao;
 import cn.com.newloading.dao.TOrderDao;
 import cn.com.newloading.dao.TOrderProgressDao;
+import cn.com.newloading.dao.TUserDao;
+import cn.com.newloading.dao.UserWalletRecordDao;
 import cn.com.newloading.service.OrderService;
+import cn.com.newloading.utils.Common;
+import cn.com.newloading.utils.DateUtil;
 import cn.com.newloading.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +43,10 @@ public class OrderServiceImpl implements OrderService {
     TGoodsDao goodsDao;
     @Autowired
     TGoodsImgDao imgDao;
+    @Autowired
+    TUserDao userDao;
+    @Autowired
+    UserWalletRecordDao recordDao;
 
     @Override
     public TOrder createOrder(TOrder order) {
@@ -121,7 +131,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<TOrder> list(TOrder order) {
-        return orderDao.query(order);
+        List<TOrder> orders = orderDao.query(order);
+        for(int i = 0;i < orders.size();i++){
+            TOrder o = orders.get(i);
+            //还未签收的都可以退货
+            if(!"60".equals(o.getStatus())){
+                o.setCanTh("1");
+            }else{
+                //已签收了获取签收时间
+                String t = progressDao.getOperateTime(o.getId(),"60");
+                if(judgeCanTh(t)) o.setCanTh("1");
+            }
+        }
+        return orders;
     }
 
     @Override
@@ -152,8 +174,58 @@ public class OrderServiceImpl implements OrderService {
         return res;
     }
 
+    @Override
+    public Result nldpay(TOrder order) {
+        //todo 如果是本系统支付，需要校验余额是否充足
+        TUser user = userDao.selectByPrimaryKey(order.getuId());
+        BigDecimal wallet = user.getuWallet();
+        BigDecimal money = new BigDecimal(order.getPayMoney());
+        if(money.doubleValue() > wallet.doubleValue()){
+            return new Result("O99","您的余额不足，请更换付款方式");
+        }
+        order.setPayWay("nldpay");
+        if(order.getId() == null){
+            //创建订单
+            order = createOrder(order);
+        }
+        //todo 扣钱
+        double w = wallet.doubleValue() - money.doubleValue();
+        int i = userDao.updateWallet(BigDecimal.valueOf(w), user.getId());
+        Result result = null;
+        if(i > 0){
+            //todo 插入账单
+            UserWalletRecord record = new UserWalletRecord();
+            record.setYue(BigDecimal.valueOf(w));
+            record.setOpreateTime(new Date());
+            record.setType("50");
+            record.setUid(order.getuId());
+            record.setMoney(new BigDecimal(order.getPayMoney()));
+            recordDao.insertSelective(record);
+
+            result = updateStatus(String.valueOf(order.getId()), "30", "支付成功，等待发货");
+            result.setObject(order.getId());
+        }else{
+            result = new Result("O88","系统异常");
+        }
+        return result;
+    }
+
     private String getOrderNumber(){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         return formatter.format(new Date());
+    }
+
+    /**
+     * 判断是否可以退货
+     * @param time
+     * @return
+     */
+    private boolean judgeCanTh(String time){
+        Date date1 = DateUtil.stringToDate(time,"yyyy-MM-dd hh:mm:ss");
+        Date date2 = new Date();
+        long l = date2.getTime() - date1.getTime();
+        double d = l / (1000 * 60 * 60 * 24);
+        if(d > Common.thDays) return false;
+        return true;
     }
 }

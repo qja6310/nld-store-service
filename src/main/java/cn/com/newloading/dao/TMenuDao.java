@@ -5,6 +5,7 @@ import cn.com.newloading.bean.TMenu;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TMenuDao {
     int deleteByPrimaryKey(Integer id);
@@ -24,4 +25,8 @@ public interface TMenuDao {
     List<TMenu> queryAllMenuByPid(@Param("pid") Integer pid);
 
     List<TMenu> queryMenuByRoleId(@Param("rid") Long rid);
+
+    List<Map> queryAllMenu();
+
+    List<Map> queryMenuByRoleId2(@Param("rid") Long rid);
 }

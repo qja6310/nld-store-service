@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
 		double m = user.getuWallet().doubleValue() + record.getMoney().doubleValue();
 		BigDecimal yue = BigDecimal.valueOf(m);
 		//修改用户钱包
-		userDao.recharge(yue,user.getId());
+		userDao.updateWallet(yue,user.getId());
 		//插入账单
 		record.setYue(yue);
 		record.setOpreateTime(new Date());
@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
 		if(m < 0.0) return new Result("U88","您的余额不足");
 		BigDecimal yue = BigDecimal.valueOf(m);
 		//修改用户钱包
-		userDao.recharge(yue,user.getId());
+		userDao.updateWallet(yue,user.getId());
 		record.setYue(yue);
 		record.setOpreateTime(new Date());
 		record.setType("40");

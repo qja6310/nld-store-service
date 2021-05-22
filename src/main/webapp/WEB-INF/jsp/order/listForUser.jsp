@@ -70,6 +70,9 @@
 						</c:when>
 					</c:choose>
 				</c:if>
+				<c:if test="${o.canTh == '1'}">
+					<a style="margin: 0 10px;color: blue;cursor: pointer;">申请退货</a>
+				</c:if>
 			</td>
 		</tr>
 	</c:forEach>

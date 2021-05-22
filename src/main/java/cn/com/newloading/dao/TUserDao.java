@@ -24,5 +24,5 @@ public interface TUserDao {
 
     TUser doLogin(@Param("uAcc") String uAcc, @Param("uPwd") String uPwd);
 
-    int recharge(@Param("money") BigDecimal money,@Param("uid") Long uid);
+    int updateWallet(@Param("money") BigDecimal money,@Param("uid") Long uid);
 }

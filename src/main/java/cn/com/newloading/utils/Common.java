@@ -5,6 +5,7 @@ public class Common {
     public static final int LIMIT = 10;
     public static final int IMGCOUNT = 5;
     public static final int GOODS_INDEX_LIMIT = 30;
+    public static final int thDays = 7;
 
     public static final String INIT_A_PWD = "123456";
 

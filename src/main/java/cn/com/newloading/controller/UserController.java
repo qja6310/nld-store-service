@@ -109,6 +109,7 @@ public class UserController extends BaseController{
 		if(tUser == null){
 			return new Result("U88","账号或密码错误，登录失败!");
 		}else{
+			logger.info("=============user : " + JSONObject.toJSONString(tUser));
 			request.getSession().setAttribute("user",tUser);
 			return new Result("U00","登录成功");
 		}

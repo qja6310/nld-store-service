@@ -20,4 +20,6 @@ public interface OrderService {
 
     Map<String,Object> sales(Long mid,int year);
 
+    Result nldpay(TOrder order);
+
 }

@@ -1,3 +1,8 @@
+layui.use('form', function() {
+    var form = layui.form;
+    layui.form.render('select', 'form');
+    layui.form.render('radio', 'form');
+});
 /**
  * 添加地址信息
  */
@@ -43,12 +48,38 @@ function toPay() {
             }
         }
     }
-    window.location.href = base + "/order/toPay?uid="+$('#uid').val()+"&mid="+$('#mid').val()
-        +"&gid="+$('#gid').val()
-        +"&count="+$('#count').val()
-        +"&payMoney="+$('#payMoney').val()
-        +"&remark="+$('#remark').val()
-        +"&conName="+conName
-        +"&conPhone="+conPhone
-        +"&conAddr="+conAddr;
+    var payWay = $("input[name='payWay']:checked").val();
+    if("alipay" == payWay){
+        window.location.href = base + "/order/toPay/alipay?uid="+$('#uid').val()+"&mid="+$('#mid').val()
+            +"&gid="+$('#gid').val()
+            +"&count="+$('#count').val()
+            +"&payMoney="+$('#payMoney').val()
+            +"&remark="+$('#remark').val()
+            +"&conName="+conName
+            +"&conPhone="+conPhone
+            +"&conAddr="+conAddr;
+    }else{
+        var obj = {
+            "uid" : $('#uid').val(),
+            "mid" : $('#mid').val(),
+            "gid" : $('#gid').val(),
+            "count" : $('#count').val(),
+            "payMoney" : $('#payMoney').val(),
+            "remark" : $('#remark').val(),
+            "conName" : conName,
+            "conPhone" : conPhone,
+            "conAddr" : conAddr,
+        }
+        var jsonStr = JSON.stringify(obj);
+        var url = base + "/order/toPay/nldpay";
+        var resObj = myAjax(jsonStr,url);
+        debugger;
+        if(resObj.code == 'O00'){
+            var oid = resObj.object;
+            $('#mainContontDiv').load(base + '/order/detail?oid='+oid+'&r=u');
+        }else{
+            tipMsg(2,resObj.msg);
+            return false;
+        }
+    }
 }

@@ -15,6 +15,7 @@
     <result column="o_remark" jdbcType="VARCHAR" property="oRemark" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="c_time" jdbcType="TIMESTAMP" property="cTime" />
+    <result column="pay_way" jdbcType="VARCHAR" property="payWay" />
   </resultMap>
 
   <resultMap id="BaseResultMap1" type="cn.com.newloading.bean.TOrder">
@@ -43,16 +44,17 @@
     <result column="m_name" jdbcType="VARCHAR" property="merchant.mName" />
     <result column="m_code" jdbcType="VARCHAR" property="merchant.mCode" />
     <result column="mid" jdbcType="BIGINT" property="merchant.id" />
+    <result column="pay_way" jdbcType="VARCHAR" property="payWay" />
   </resultMap>
 
   <sql id="Base_Column_List">
     id, u_id, m_id, g_id, o_number, con_name, con_phone, con_addr, `count`, pay_money, 
-    o_remark, `status`, c_time
+    o_remark, `status`, c_time,pay_way
   </sql>
 
   <sql id="Base_Column_List1">
     o.id, o.u_id, o.m_id, o.g_id, o.o_number, o.con_name, o.con_phone, o.con_addr, o.`count`, o.pay_money,
-    o.o_remark, o.`status`, o.c_time
+    o.o_remark, o.`status`, o.c_time,o.pay_way
   </sql>
 
   <sql id="Base_Column_List2">
@@ -73,11 +75,11 @@
     insert into t_order (u_id, m_id, g_id, o_number, 
       con_name, con_phone, con_addr, 
       `count`, pay_money, o_remark, 
-      `status`, c_time)
+      `status`, c_time,pay_way)
     values (#{uId,jdbcType=BIGINT}, #{mId,jdbcType=BIGINT}, #{gId,jdbcType=BIGINT}, #{oNumber,jdbcType=VARCHAR}, 
       #{conName,jdbcType=VARCHAR}, #{conPhone,jdbcType=VARCHAR}, #{conAddr,jdbcType=VARCHAR}, 
       #{count,jdbcType=INTEGER}, #{payMoney,jdbcType=VARCHAR}, #{oRemark,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP})
+      #{status,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP}, #{payWay,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="cn.com.newloading.bean.TOrder" useGeneratedKeys="true">
     insert into t_order
@@ -118,6 +120,9 @@
       <if test="cTime != null">
         c_time,
       </if>
+      <if test="payWay != null">
+        pay_way,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uId != null">
@@ -155,6 +160,9 @@
       </if>
       <if test="cTime != null">
         #{cTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payWay != null">
+        #{payWay,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

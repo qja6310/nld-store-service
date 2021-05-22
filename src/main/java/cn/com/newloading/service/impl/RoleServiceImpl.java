@@ -81,9 +81,9 @@ public class RoleServiceImpl implements RoleService {
         if(!StringUtils.isEmpty(menuIds)){//修改权限
             //超级管理员权限不可修改
             TRole role = roleDao.selectByPrimaryKey(Long.valueOf(id));
-//            if("CJGLY".equals(role.getrCode())){
-//                return new Result("R88","该角色不可重新配置权限");
-//            }
+            if("CJGLY".equals(role.getrCode())){
+                return new Result("R88","该角色不可重新配置权限");
+            }
             //先删除已有的
             roleDao.deleteMenuByRoleId(Long.valueOf(id));
             String[] arr = menuIds.split(",");
@@ -114,5 +114,16 @@ public class RoleServiceImpl implements RoleService {
         String[] arr = roleIds.split(",");
         for (String rid : arr) roleDao.insertAdminRole(Long.valueOf(aid),Long.valueOf(rid));
         return new Result("R00","操作成功");
+    }
+
+    @Override
+    public Map<String, Object> jurisdiction(String rid) {
+        Map<String, Object> resMap = new HashMap<>();
+        //查询所以菜单
+        List<Map> allMenus = menuDao.queryAllMenu();
+        resMap.put("allMenus",allMenus);
+        List<Map> menus = menuDao.queryMenuByRoleId2(Long.valueOf(rid));
+        resMap.put("menus",menus);
+        return resMap;
     }
 }

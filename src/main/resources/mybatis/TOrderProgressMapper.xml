@@ -90,4 +90,8 @@
     from t_order_progress where o_id = #{oid,jdbcType=BIGINT}
     order by operate_time desc
   </select>
+  <select id="getOperateTime" resultType="java.lang.String">
+    select operate_time from t_order_progress where o_id = #{oid,jdbcType=BIGINT} and
+      `status` = #{status,jdbcType=VARCHAR}
+  </select>
 </mapper>

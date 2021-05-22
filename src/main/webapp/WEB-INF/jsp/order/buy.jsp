@@ -64,7 +64,14 @@
 	</div>
 </div>
 <textarea id="remark" name="remark" style="width: 98%;margin-left: 13px;" placeholder="备注，不超过250个字" class="layui-textarea" maxlength="250"></textarea>
-<div style="margin: 20px 0px;">
-	<button type="button" class="layui-btn layui-btn-normal" style="float: right;" onclick="toPay()">确认支付</button>
-</div>
+<form class="layui-form" action="" lay-filter="form" style="margin-top: 10px;">
+	<div class="layui-form-item" style="float: right;">
+		<label class="layui-form-label">支付方式</label>
+		<div class="layui-input-block">
+			<input type="radio" name="payWay" value="nldpay" title="钱包" checked>
+			<input type="radio" name="payWay" value="alipay" title="支付宝">
+			<button type="button" class="layui-btn layui-btn-normal" onclick="toPay()">确认支付</button>
+		</div>
+	</div>
+</form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/newloading/js/order/buy.js"></script>

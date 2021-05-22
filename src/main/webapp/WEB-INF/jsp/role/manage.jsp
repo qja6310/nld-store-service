@@ -64,7 +64,7 @@
 					</td>
 					<td>
 						<a style="margin: 0 10px;color: blue;cursor: pointer;" onclick="updateName(${r.id})">修改名称</a>
-						<a class="jurisdiction" fid="${r.id}" id="jurisdict-${r.id}" style="margin: 0 10px;color: blue;cursor: pointer;" onclick="jurisdict(${r.id})">权限查看</a>
+						<a style="margin: 0 10px;color: blue;cursor: pointer;" onclick="jurisdiction(${r.id})">权限</a>
 						<c:if test="${r.rCode != 'CJGLY'}">
 							<a style="margin: 0 10px;color: orangered;cursor: pointer;" onclick="delRole(${r.id})">角色删除</a>
 						</c:if>
@@ -74,33 +74,33 @@
 			</tbody>
 		</table>
 	</div>
-	<div id="menuTree" class="demo-tree-more" style="float: right;margin-right: 20px;width: 25%;">
-		<ul class="tree tree-lines" data-ride="tree">
-			<c:forEach items="${menus}" var="m1">
-				<li class="has-list open in">
-					<a>
-						<div class="checkbox-primary menuName-1" style="display: none;">
-							<input type="checkbox" class="hide checkBox checkBox-1" id="menu_${m1.id}" value="${m1.id}">
-							<label for="menu_${m1.id}">${m1.menuname}</label>
-						</div>
-						<div class="menuName-2">${m1.menuname}</div>
-					</a>
-					<ul>
-						<c:forEach items="${m1.menus}" var="m2">
-							<li>
-								<a>
-									<div class="checkbox-primary menuName-1" style="display: none;">
-										<input type="checkbox" class="checkBox checkBox-2" id="menu_${m2.id}" value="${m2.id}" pid="${m1.id}">
-										<label for="menu_${m2.id}">${m2.menuname}</label>
-									</div>
-									<div class="menuName-2">${m2.menuname}</div>
-								</a>
-							</li>
-						</c:forEach>
-					</ul>
-				</li>
-			</c:forEach>
-		</ul>
-	</div>
+<%--	<div id="menuTree" class="demo-tree-more" style="float: right;margin-right: 20px;width: 25%;">--%>
+<%--		<ul class="tree tree-lines" data-ride="tree">--%>
+<%--			<c:forEach items="${menus}" var="m1">--%>
+<%--				<li class="has-list open in">--%>
+<%--					<a>--%>
+<%--						<div class="checkbox-primary menuName-1" style="display: none;">--%>
+<%--							<input type="checkbox" class="hide checkBox checkBox-1" id="menu_${m1.id}" value="${m1.id}">--%>
+<%--							<label for="menu_${m1.id}">${m1.menuname}</label>--%>
+<%--						</div>--%>
+<%--						<div class="menuName-2">${m1.menuname}</div>--%>
+<%--					</a>--%>
+<%--					<ul>--%>
+<%--						<c:forEach items="${m1.menus}" var="m2">--%>
+<%--							<li>--%>
+<%--								<a>--%>
+<%--									<div class="checkbox-primary menuName-1" style="display: none;">--%>
+<%--										<input type="checkbox" class="checkBox checkBox-2" id="menu_${m2.id}" value="${m2.id}" pid="${m1.id}">--%>
+<%--										<label for="menu_${m2.id}">${m2.menuname}</label>--%>
+<%--									</div>--%>
+<%--									<div class="menuName-2">${m2.menuname}</div>--%>
+<%--								</a>--%>
+<%--							</li>--%>
+<%--						</c:forEach>--%>
+<%--					</ul>--%>
+<%--				</li>--%>
+<%--			</c:forEach>--%>
+<%--		</ul>--%>
+<%--	</div>--%>
 </body>
 </html>

@@ -135,4 +135,16 @@
     WHERE
     rm.r_id = #{rid,jdbcType=BIGINT}
   </select>
+  <select id="queryAllMenu" resultType="java.util.Map">
+    SELECT id,menuName,pid FROM t_menu
+  </select>
+
+  <select id="queryMenuByRoleId2" resultType="java.util.Map">
+    SELECT
+      m.id,m.menuName,m.pid
+    FROM
+    t_menu m inner join t_role_menu rm on m.id = rm.m_id
+    WHERE
+    rm.r_id = #{rid,jdbcType=BIGINT}
+  </select>
 </mapper>

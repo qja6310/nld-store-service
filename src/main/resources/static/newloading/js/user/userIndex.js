@@ -7,6 +7,7 @@
 layui.use('form', function() {
     var form = layui.form;
     layui.form.render('select', 'form');
+    layui.form.render('radio', 'form');
 });
 
 $(document).ready(function () {

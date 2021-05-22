@@ -131,7 +131,7 @@
     where u_acc = #{uAcc,jdbcType=VARCHAR}
     AND u_pwd = #{uPwd,jdbcType=VARCHAR}
   </select>
-  <update id="recharge">
+  <update id="updateWallet">
     update t_user set u_wallet = #{money,jdbcType=DECIMAL} where id = #{uid,jdbcType=BIGINT}
   </update>
 </mapper>

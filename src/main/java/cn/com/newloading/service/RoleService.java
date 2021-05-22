@@ -61,4 +61,6 @@ public interface RoleService {
      * @return
      */
     Result doConfig(String aid,String roleIds);
+
+    Map<String,Object> jurisdiction(String rid);
 }

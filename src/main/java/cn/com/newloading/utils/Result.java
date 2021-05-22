@@ -46,4 +46,13 @@ public class Result {
     public void setObject(Object object) {
         this.object = object;
     }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "code='" + code + '\'' +
+                ", msg='" + msg + '\'' +
+                ", object=" + object +
+                '}';
+    }
 }

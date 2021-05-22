@@ -31,7 +31,7 @@ function detail(oid) {
  * @param oid
  */
 function toPay(oid) {
-    window.location.href = base + "/order/toPay?oid="+oid;
+    window.location.href = base + "/order/toPay/alipay?oid="+oid;
 }
 
 /**

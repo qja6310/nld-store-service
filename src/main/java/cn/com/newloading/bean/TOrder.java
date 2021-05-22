@@ -66,6 +66,11 @@ public class TOrder extends BaseBean implements Serializable {
     private String status;
 
     /**
+     * 支付方式
+     */
+    private String payWay;
+
+    /**
      * 创建时间
      */
     private Date cTime;
@@ -77,6 +82,8 @@ public class TOrder extends BaseBean implements Serializable {
 
     private TMerchant merchant;//商户
 
+    private String canTh;//是否可以退货
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -85,6 +92,22 @@ public class TOrder extends BaseBean implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCanTh() {
+        return canTh;
+    }
+
+    public void setCanTh(String canTh) {
+        this.canTh = canTh;
+    }
+
+    public String getPayWay() {
+        return payWay;
+    }
+
+    public void setPayWay(String payWay) {
+        this.payWay = payWay;
     }
 
     public Long getuId() {

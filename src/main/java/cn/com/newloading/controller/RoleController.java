@@ -4,6 +4,7 @@ import cn.com.newloading.bean.TMenu;
 import cn.com.newloading.bean.TRole;
 import cn.com.newloading.service.RoleService;
 import cn.com.newloading.utils.Result;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -87,5 +88,15 @@ public class RoleController extends BaseController{
         String aid = jsonObject.getString("aid");
         String roleIds = jsonObject.getString("roleIds");
         return roleService.doConfig(aid,roleIds);
+    }
+
+    @RequestMapping("/jurisdiction")
+    public String jurisdiction(HttpServletRequest request,Model model){
+        String rid = request.getParameter("rid");
+        Map<String, Object> map = roleService.jurisdiction(rid);
+        model.addAttribute("rid",rid);
+        model.addAttribute("allMenus", JSON.toJSONString(map.get("allMenus")));
+        model.addAttribute("menus",JSON.toJSONString(map.get("menus")));
+        return "role/jurisdiction";
     }
 }

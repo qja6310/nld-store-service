@@ -19,4 +19,6 @@ public interface TOrderProgressDao {
     int updateByPrimaryKey(TOrderProgress record);
 
     List<TOrderProgress> queryByOid(@Param("oid") Long oid);
+
+    String getOperateTime(@Param("oid") Long oid,@Param("status") String status);
 }

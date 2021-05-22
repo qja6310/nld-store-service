@@ -138,7 +138,12 @@ public class OrderController extends BaseController {
         return "order/buy";
     }
 
-    @RequestMapping(value = "/toPay")
+    /**
+     * ali支付
+     * @param req
+     * @param response
+     */
+    @RequestMapping(value = "/toPay/alipay")
     public void toPay(HttpServletRequest req, HttpServletResponse response)throws Exception {
         /**
          * 先查询订单，如果订单不存在，再创建订单
@@ -154,6 +159,35 @@ public class OrderController extends BaseController {
         }
         Alipay alipay = new Alipay(order.getoNumber(),order.getPayMoney(),order.getoNumber());
         AliPayController.useAlipay(req,response,alipay,"/order/callBack");
+    }
+
+    @RequestMapping(value = "/toPay/nldpay")
+    @ResponseBody
+    public Result toPay(HttpServletRequest req){
+        /** 先查询订单，如果订单不存在，再创建订单*/
+        TOrder order = null;
+        String oid = req.getParameter("oid");
+        if(!Common.isBlank(oid)){
+            order = orderService.getOrder(oid);
+        }else{
+            JSONObject jsonObject = (JSONObject) getParams(req);
+            String gid = jsonObject.getString("gid");
+            String mid = jsonObject.getString("mid");
+            order = new TOrder();
+            order.setgId(Long.valueOf(gid));
+            order.setmId(Long.valueOf(mid));
+            order.setuId(Long.valueOf(jsonObject.getString("uid")));
+            order.setCount(Integer.valueOf(jsonObject.getString("count")));
+            order.setPayMoney(jsonObject.getString("payMoney"));
+            order.setoRemark(jsonObject.getString("remark"));
+            order.setConName(jsonObject.getString("conName"));
+            order.setConPhone(jsonObject.getString("conPhone"));
+            order.setConAddr(jsonObject.getString("conAddr"));
+        }
+        //todo  支付订单
+        Result result = orderService.nldpay(order);
+        logger.info("==========返回:" + result.toString());
+        return result;
     }
 
     /**
@@ -174,6 +208,7 @@ public class OrderController extends BaseController {
         order.setConName(request.getParameter("conName"));
         order.setConPhone(request.getParameter("conPhone"));
         order.setConAddr(request.getParameter("conAddr"));
+        order.setPayWay("alipay");
         order = orderService.createOrder(order);
         request.getSession().setAttribute("order",order);//存到session，回调时需要用到
         return order;
